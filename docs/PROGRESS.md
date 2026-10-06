@@ -34,6 +34,8 @@
 - 2026-10-06: Pinned `requirements.txt` (`Flask==3.1.3`, `ollama==0.6.3`).
 - 2026-10-06: Created MIT `LICENSE`, production `README.md`, and 5 EXIF-stripped sample photos in `samples/`.
 - 2026-10-06: Cleaned secrets audit: 0 sensitive tokens in git history.
+- 2026-10-06: Redesigned UI to a tactile, modern mobile-first outdoor aesthetic (deep forest palette, responsive 3x3 square cards with status badges, target drawer, win celebration banner, offline stats counters, and safety footer).
+- 2026-10-06: Tested end-to-end user workflows using Playwright headless Edge browser: verified desktop view, mobile view, square selection, photo upload, live local Gemma 4 inference, card marking, and Dex logging.
 
 ## Open questions
 - Author to take Grassdex outside with phone on hotspot for field test snaps (Day 3).
