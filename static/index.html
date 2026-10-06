@@ -2,256 +2,762 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Grassdex</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Grassdex — Touch Grass Nature Dex</title>
 <style>
   :root {
-    --paper: #e8eee0;
-    --ink: #1d2a20;
-    --bilberry: #3d2f73;
-    --rule: #b9c7b0;
-    --done-bg: #d7e8cb;
-    --done-border: #4a7a3b;
-    --warn-border: #a86c18;
+    --forest-dark: #12281d;
+    --forest: #1b4332;
+    --forest-light: #2d6a4f;
+    --emerald: #40916c;
+    --mint: #52b788;
+    --mint-soft: #d8f3dc;
+    --mint-glow: rgba(82, 183, 136, 0.25);
+    
+    --bg-page: #edf2ea;
+    --bg-card: #ffffff;
+    --bg-card-subtle: #f8faf7;
+    --border: #d6e2d5;
+    --border-subtle: #e5ede3;
+    
+    --text-primary: #152219;
+    --text-secondary: #496350;
+    --text-muted: #728a78;
+    
+    --accent-gold: #d4a373;
+    --accent-gold-soft: #faedcd;
+    --accent-red: #c94a4a;
+    
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 20px;
+    --radius-full: 9999px;
+    
+    --shadow-sm: 0 2px 6px rgba(18, 40, 29, 0.04);
+    --shadow-md: 0 6px 16px rgba(18, 40, 29, 0.07);
+    --shadow-lg: 0 12px 32px rgba(18, 40, 29, 0.12);
   }
-  * { box-sizing: border-box; }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
   body {
-    margin: 0 auto;
-    padding: 16px 14px 40px;
-    max-width: 34rem;
-    background: var(--paper);
-    color: var(--ink);
-    font: 16px/1.5 Georgia, serif;
+    background-color: var(--bg-page);
+    color: var(--text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 0;
   }
+
+  /* App Shell Container */
+  .app-shell {
+    width: 100%;
+    max-width: 480px;
+    background: var(--bg-card);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+  }
+
+  @media (min-width: 481px) {
+    body { padding: 24px 16px; }
+    .app-shell {
+      min-height: auto;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+  }
+
+  /* Header */
   header {
+    padding: 16px 20px 12px;
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border-subtle);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 12px;
   }
-  h1 { margin: 0; font-size: 1.8rem; }
-  .tabs { display: flex; gap: 6px; }
-  .tab-btn {
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .brand-icon {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--forest-light), var(--forest-dark));
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(27, 67, 50, 0.25);
+  }
+
+  .brand-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: var(--forest-dark);
+  }
+
+  .brand-pill {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    background: var(--mint-soft);
+    color: var(--forest);
+    padding: 2px 7px;
+    border-radius: var(--radius-full);
+  }
+
+  /* Segmented Nav */
+  .nav-pills {
+    display: flex;
+    background: var(--bg-page);
+    padding: 3px;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--border-subtle);
+  }
+
+  .nav-btn {
+    border: none;
+    background: transparent;
     padding: 6px 14px;
-    font: 600 14px system-ui, sans-serif;
-    border: 1px solid var(--ink);
-    background: none;
-    color: var(--ink);
-    border-radius: 4px;
+    border-radius: var(--radius-full);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-secondary);
     cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    align-items: center;
+    gap: 5px;
   }
-  .tab-btn.active {
-    background: var(--ink);
-    color: var(--paper);
+
+  .nav-btn.active {
+    background: var(--bg-card);
+    color: var(--forest-dark);
+    box-shadow: var(--shadow-sm);
   }
-  #status {
-    margin: 10px 0;
-    padding: 8px 10px;
-    font: 14px system-ui, sans-serif;
-    border-radius: 4px;
-    background: rgba(0,0,0,0.05);
+
+  /* Main Action Area */
+  .action-bar {
+    padding: 16px 20px;
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .snap-trigger {
+    width: 100%;
+    padding: 14px 18px;
+    background: linear-gradient(135deg, var(--forest-light), var(--forest-dark));
+    border-radius: var(--radius-md);
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(27, 67, 50, 0.28);
+    transition: transform 0.1s ease, box-shadow 0.2s ease;
+    border: none;
+    text-align: center;
+  }
+
+  .snap-trigger:active {
+    transform: scale(0.985);
+    box-shadow: 0 2px 8px rgba(27, 67, 50, 0.2);
+  }
+
+  .snap-trigger input {
     display: none;
   }
-  #status.show { display: block; }
-  .snap-wrap { margin: 12px 0 16px; }
-  .snap {
-    display: block;
-    position: relative;
-    text-align: center;
-    padding: 14px 12px;
-    border-radius: 6px;
-    background: var(--bilberry);
-    color: #fff;
-    font: 600 16px system-ui, sans-serif;
-    cursor: pointer;
-  }
-  .snap:focus-within { outline: 3px solid var(--ink); outline-offset: 2px; }
-  .snap input { position: absolute; opacity: 0; width: 1px; height: 1px; }
 
-  /* Bingo view */
-  .bingo-controls {
+  /* Status Toast / Banner */
+  #statusToast {
+    display: none;
+    margin: 10px 20px 0;
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-weight: 600;
+    background: var(--bg-card-subtle);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    align-items: center;
+    gap: 8px;
+    animation: fadeIn 0.2s ease;
+  }
+
+  #statusToast.active {
+    display: flex;
+  }
+
+  #statusToast.pulse {
+    background: var(--mint-soft);
+    border-color: var(--mint);
+    color: var(--forest-dark);
+  }
+
+  #statusToast.error {
+    background: #ffe3e3;
+    border-color: #f5a3a3;
+    color: var(--accent-red);
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Main Views */
+  .view-content {
+    padding: 18px 20px;
+    flex: 1;
+  }
+
+  /* Win Banner */
+  .win-card {
+    display: none;
+    margin-bottom: 16px;
+    padding: 18px 16px;
+    background: linear-gradient(135deg, #1b4332, #0d2319);
+    border: 2px solid var(--mint);
+    border-radius: var(--radius-md);
+    color: #ffffff;
+    text-align: center;
+    box-shadow: 0 8px 24px rgba(27, 67, 50, 0.35);
+    animation: celebrate 0.4s ease;
+  }
+
+  .win-card h2 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    margin-bottom: 6px;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .win-card p {
+    font-size: 13.5px;
+    color: #d8f3dc;
+    font-weight: 500;
+  }
+
+  @keyframes celebrate {
+    0% { transform: scale(0.9); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  /* Bingo Sub-Header */
+  .bingo-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 8px;
-    margin-bottom: 12px;
-    font: 14px system-ui, sans-serif;
+    margin-bottom: 14px;
+    gap: 10px;
   }
-  .bingo-controls select {
-    padding: 4px 8px;
-    font: inherit;
-    border: 1px solid var(--ink);
-    border-radius: 4px;
-    background: var(--paper);
-    color: var(--ink);
+
+  .setting-select-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: var(--bg-card-subtle);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 2px 8px;
   }
-  .bingo-controls button {
-    padding: 4px 10px;
-    font: inherit;
-    border: 1px solid var(--ink);
-    background: none;
-    border-radius: 4px;
+
+  .setting-select-wrap select {
+    border: none;
+    background: transparent;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    padding: 6px 4px;
+    outline: none;
     cursor: pointer;
   }
-  .banner-win {
-    padding: 12px;
-    margin-bottom: 12px;
-    background: #d4ebd0;
-    border: 2px solid var(--done-border);
-    border-radius: 6px;
-    font: 600 17px system-ui, sans-serif;
-    text-align: center;
-    color: #194d12;
+
+  .btn-new-card {
+    border: 1px solid var(--border);
+    background: var(--bg-card-subtle);
+    color: var(--forest);
+    font-size: 13px;
+    font-weight: 700;
+    padding: 7px 14px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.15s ease;
   }
-  .grid {
+
+  .btn-new-card:hover {
+    background: var(--mint-soft);
+    border-color: var(--mint);
+  }
+
+  /* Target info card */
+  .target-card {
+    background: var(--bg-card-subtle);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    margin-bottom: 14px;
+    font-size: 13px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .target-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .target-info span {
+    font-size: 11px;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--text-muted);
+  }
+
+  .target-info strong {
+    color: var(--forest-dark);
+    font-size: 13.5px;
+  }
+
+  .btn-override-active {
+    font-size: 12px;
+    font-weight: 700;
+    padding: 5px 10px;
+    border-radius: var(--radius-sm);
+    background: var(--accent-gold-soft);
+    color: #8c5b23;
+    border: 1px solid #e2be89;
+    cursor: pointer;
+  }
+
+  /* 3x3 Bingo Grid */
+  .bingo-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-    margin-bottom: 16px;
+    gap: 10px;
+    margin-bottom: 18px;
   }
-  .square {
-    min-height: 82px;
-    padding: 8px 6px;
-    border: 2px solid var(--rule);
-    border-radius: 6px;
-    background: #f4f8ef;
+
+  .square-card {
+    aspect-ratio: 1;
+    background: var(--bg-card);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 10px 8px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     cursor: pointer;
-    text-align: center;
+    transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    box-shadow: var(--shadow-sm);
     user-select: none;
   }
-  .square:focus-visible { outline: 3px solid var(--bilberry); }
-  .square.selected {
-    border-color: var(--bilberry);
-    background: #ece8f5;
-  }
-  .square.done {
-    border-color: var(--done-border);
-    background: var(--done-bg);
-  }
-  .square.override {
-    border-color: var(--warn-border);
-  }
-  .sq-text {
-    font: 500 13px/1.3 system-ui, sans-serif;
-    word-break: break-word;
-  }
-  .square.done .sq-text { font-weight: 700; text-decoration: line-through; }
-  .sq-badge {
-    margin-top: 4px;
-    font: 700 11px system-ui, sans-serif;
-    text-transform: uppercase;
-    letter-spacing: .5px;
-    opacity: .8;
-  }
-  .sq-override-btn {
-    margin-top: 4px;
-    padding: 2px 4px;
-    font: 11px system-ui, sans-serif;
-    border: 1px dashed var(--warn-border);
-    background: none;
-    color: var(--warn-border);
-    border-radius: 3px;
-    cursor: pointer;
+
+  .square-card:hover {
+    border-color: var(--mint);
+    transform: translateY(-1px);
   }
 
-  /* Dex view */
-  #stats { margin: 2px 0 14px; font: 14px system-ui, sans-serif; opacity: .8; }
-  .entry {
-    padding: 12px 0 12px 10px;
-    border-bottom: 1px solid var(--rule);
-    border-left: 4px solid var(--rule);
+  .square-card.selected {
+    border-color: var(--forest);
+    box-shadow: 0 0 0 3px var(--mint-glow), var(--shadow-md);
+    background: #fdfefd;
+    transform: translateY(-2px);
+  }
+
+  .square-card.done {
+    background: #edf7ef;
+    border-color: var(--mint);
+  }
+
+  .square-card.override {
+    background: #fdf8ed;
+    border-color: var(--accent-gold);
+  }
+
+  .sq-num {
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--text-muted);
+    line-height: 1;
+  }
+
+  .sq-text {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--text-primary);
+    text-align: center;
+    word-break: break-word;
+    margin: auto 0;
+  }
+
+  .square-card.done .sq-text {
+    color: var(--forest);
+    font-weight: 700;
+  }
+
+  .sq-status-pill {
+    align-self: center;
+    font-size: 9.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    padding: 2px 7px;
+    border-radius: var(--radius-full);
+    line-height: 1.2;
+    background: var(--bg-page);
+    color: var(--text-muted);
+  }
+
+  .square-card.selected .sq-status-pill {
+    background: var(--forest);
+    color: #fff;
+  }
+
+  .square-card.done .sq-status-pill {
+    background: var(--forest-light);
+    color: #fff;
+  }
+
+  .square-card.override .sq-status-pill {
+    background: #b07d48;
+    color: #fff;
+  }
+
+  /* Dex View */
+  .dex-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+
+  .stat-chip {
+    background: var(--bg-card-subtle);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 8px;
+    text-align: center;
+  }
+
+  .stat-chip strong {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--forest-dark);
+    line-height: 1.1;
+  }
+
+  .stat-chip span {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  .dex-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .dex-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 14px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    gap: 12px;
+    transition: transform 0.15s ease;
+  }
+
+  .dex-card:hover {
+    box-shadow: var(--shadow-md);
+  }
+
+  .dex-thumb {
+    width: 76px;
+    height: 76px;
+    border-radius: var(--radius-sm);
+    object-fit: cover;
+    background: var(--bg-page);
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .dex-thumb-placeholder {
+    width: 76px;
+    height: 76px;
+    border-radius: var(--radius-sm);
+    background: var(--bg-page);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .dex-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .dex-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 6px;
+    margin-bottom: 4px;
+  }
+
+  .dex-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .kind-pill {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: var(--radius-full);
+    flex-shrink: 0;
+  }
+
+  .kind-plant { background: #d8f3dc; color: #1b4332; }
+  .kind-bug { background: #fef08a; color: #854d0e; }
+  .kind-bird { background: #e0f2fe; color: #075985; }
+  .kind-fungus { background: #fae8ff; color: #86198f; }
+  .kind-other { background: #f1f5f9; color: #475569; }
+
+  .dex-meta {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--text-muted);
+    display: flex;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+
+  .dex-fact {
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    line-height: 1.35;
+    margin-bottom: 8px;
+    background: var(--bg-card-subtle);
+    padding: 6px 8px;
+    border-radius: var(--radius-sm);
+    border-left: 3px solid var(--mint);
+  }
+
+  .dex-square-note {
+    font-size: 11.5px;
+    color: var(--forest-light);
+    font-weight: 600;
     margin-bottom: 8px;
   }
-  .entry.plant { border-left-color: #5b8c4a; }
-  .entry.bug { border-left-color: #b8862b; }
-  .entry.bird { border-left-color: #3d6f9e; }
-  .entry.fungus { border-left-color: #8a5a7a; }
-  .entry h3 { margin: 0; font-size: 1.15rem; }
-  .meta { font: 13px system-ui, sans-serif; opacity: .75; margin: 2px 0 6px; }
-  .entry p { margin: 4px 0 8px; font-size: 15px; }
-  .entry-actions { display: flex; gap: 6px; align-items: center; }
-  .entry button {
-    padding: 3px 8px;
-    font: 13px system-ui, sans-serif;
-    background: none;
-    color: var(--ink);
-    border: 1px solid var(--ink);
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  .entry button.on { background: var(--ink); color: var(--paper); }
-  .thumb {
-    max-width: 80px;
-    max-height: 80px;
-    border-radius: 4px;
-    float: right;
-    margin: 0 0 6px 10px;
-    border: 1px solid var(--rule);
+
+  .dex-actions {
+    display: flex;
+    gap: 6px;
+    margin-top: auto;
   }
 
+  .rate-btn {
+    padding: 4px 10px;
+    font-size: 11.5px;
+    font-weight: 700;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--bg-card-subtle);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.12s ease;
+  }
+
+  .rate-btn:hover {
+    background: var(--border-subtle);
+  }
+
+  .rate-btn.active-right {
+    background: var(--mint);
+    color: #fff;
+    border-color: var(--mint);
+  }
+
+  .rate-btn.active-close {
+    background: var(--accent-gold);
+    color: #fff;
+    border-color: var(--accent-gold);
+  }
+
+  .rate-btn.active-wrong {
+    background: var(--accent-red);
+    color: #fff;
+    border-color: var(--accent-red);
+  }
+
+  /* Footer */
   footer {
-    margin-top: 28px;
-    padding-top: 14px;
-    border-top: 1px solid var(--rule);
-    font: 12px system-ui, sans-serif;
-    opacity: .75;
+    padding: 14px 20px 20px;
+    border-top: 1px solid var(--border-subtle);
+    background: var(--bg-card-subtle);
     text-align: center;
+    font-size: 11.5px;
+    font-weight: 500;
+    color: var(--text-muted);
+    line-height: 1.4;
   }
 </style>
 </head>
 <body>
 
-<header>
-  <h1>Grassdex</h1>
-  <div class="tabs">
-    <button id="tabBingo" class="tab-btn active" onclick="switchTab('bingo')">Bingo</button>
-    <button id="tabDex" class="tab-btn" onclick="switchTab('dex')">Dex</button>
-  </div>
-</header>
+<div class="app-shell">
+  <!-- Header -->
+  <header>
+    <div class="brand">
+      <div class="brand-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
+          <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+        </svg>
+      </div>
+      <div>
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <h1 class="brand-title">Grassdex</h1>
+          <span class="brand-pill">Local</span>
+        </div>
+      </div>
+    </div>
 
-<div id="status" role="status"></div>
+    <nav class="nav-pills">
+      <button id="tabBingo" class="nav-btn active" onclick="switchTab('bingo')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/></svg>
+        Bingo
+      </button>
+      <button id="tabDex" class="nav-btn" onclick="switchTab('dex')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/></svg>
+        Dex
+      </button>
+    </nav>
+  </header>
 
-<div class="snap-wrap">
-  <label class="snap" id="snapLabel">
-    <span id="snapText">Snap a photo</span>
-    <input id="photo" type="file" accept="image/*" capture="environment">
-  </label>
-</div>
-
-<!-- Bingo View -->
-<div id="viewBingo">
-  <div class="bingo-controls">
-    <label>Setting:
-      <select id="settingSelect">
-        <option value="park">Park</option>
-        <option value="trail">Trail</option>
-        <option value="campus">Campus</option>
-        <option value="garden">Garden</option>
-        <option value="street">Street</option>
-      </select>
+  <!-- Persistent Snap Button -->
+  <div class="action-bar">
+    <label class="snap-trigger" id="snapLabel">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+      <span id="snapText">Snap a photo</span>
+      <input id="photoInput" type="file" accept="image/*" capture="environment">
     </label>
-    <button onclick="newCard()">New Card</button>
   </div>
 
-  <div id="winBanner" class="banner-win" style="display:none;">
-    🎉 Bingo! Now put the phone away.
+  <!-- Status Notification -->
+  <div id="statusToast">
+    <span id="statusIcon">⚡</span>
+    <span id="statusMsg">Ready</span>
   </div>
 
-  <div class="grid" id="grid"></div>
-</div>
+  <!-- BINGO VIEW -->
+  <main id="viewBingo" class="view-content">
+    <div id="winCard" class="win-card">
+      <h2>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+        Bingo! 3 In A Row
+      </h2>
+      <p>Challenge complete. Now put the phone away and enjoy nature!</p>
+    </div>
 
-<!-- Dex View -->
-<div id="viewDex" style="display:none;">
-  <div id="stats">Loading log...</div>
-  <div id="list"></div>
-</div>
+    <div class="bingo-bar">
+      <div class="setting-select-wrap">
+        <select id="settingSelect" onchange="newCard()">
+          <option value="park">🌲 Park</option>
+          <option value="trail">🥾 Trail</option>
+          <option value="garden">🌺 Garden</option>
+          <option value="campus">🏛️ Campus</option>
+          <option value="street">🏙️ Street</option>
+        </select>
+      </div>
 
-<footer>
-  Stay safe. Do not touch, pick or approach anything. Not for eating or medical decisions.
-</footer>
+      <button class="btn-new-card" onclick="newCard()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+        New Card
+      </button>
+    </div>
+
+    <!-- Active Target Info -->
+    <div class="target-card" id="targetCard" style="display:none;">
+      <div class="target-info">
+        <span>Selected Square</span>
+        <strong id="targetText">Tap a square to target</strong>
+      </div>
+      <button class="btn-override-active" id="btnOverrideSelected" onclick="overrideSelected()">Mark Done</button>
+    </div>
+
+    <div class="bingo-grid" id="grid"></div>
+  </main>
+
+  <!-- DEX VIEW -->
+  <main id="viewDex" class="view-content" style="display:none;">
+    <div class="dex-summary">
+      <div class="stat-chip">
+        <strong id="statFound">0</strong>
+        <span>Logged</span>
+      </div>
+      <div class="stat-chip">
+        <strong id="statAccuracy">100%</strong>
+        <span>Rated Right</span>
+      </div>
+      <div class="stat-chip">
+        <strong id="statOffline">Gemma 4</strong>
+        <span>100% Local</span>
+      </div>
+    </div>
+
+    <div class="dex-list" id="dexList"></div>
+  </main>
+
+  <!-- Outdoor Safety Footer -->
+  <footer>
+    🛡️ <strong>Touch Grass Safely:</strong> Never touch, pick, eat, or approach wildlife. Not for medical or foraging decisions.
+  </footer>
+</div>
 
 <script>
 const $ = id => document.getElementById(id);
@@ -264,8 +770,8 @@ let log = [];
 
 function switchTab(tab) {
   currentTab = tab;
-  $("tabBingo").className = "tab-btn" + (tab === "bingo" ? " active" : "");
-  $("tabDex").className = "tab-btn" + (tab === "dex" ? " active" : "");
+  $("tabBingo").className = "nav-btn" + (tab === "bingo" ? " active" : "");
+  $("tabDex").className = "nav-btn" + (tab === "dex" ? " active" : "");
   $("viewBingo").style.display = tab === "bingo" ? "block" : "none";
   $("viewDex").style.display = tab === "dex" ? "block" : "none";
   updateSnapLabel();
@@ -276,7 +782,7 @@ function updateSnapLabel() {
     const sq = bingoCard.squares[selectedSquare];
     $("snapText").textContent = `Snap for: "${sq.text}"`;
   } else {
-    $("snapText").textContent = "Snap a photo";
+    $("snapText").textContent = (currentTab === "bingo") ? "Snap any nature subject" : "Identify with local Gemma";
   }
 }
 
@@ -294,33 +800,42 @@ function checkWin(squares) {
 function renderBingo() {
   if (!bingoCard || !bingoCard.squares) return;
   const won = checkWin(bingoCard.squares);
-  $("winBanner").style.display = won ? "block" : "none";
+  $("winCard").style.display = won ? "block" : "none";
+
+  // Target card
+  const targetCard = $("targetCard");
+  if (selectedSquare !== null && bingoCard.squares[selectedSquare]) {
+    const sq = bingoCard.squares[selectedSquare];
+    $("targetText").textContent = sq.text;
+    $("btnOverrideSelected").style.display = (sq.status === "open") ? "block" : "none";
+    targetCard.style.display = "flex";
+  } else {
+    targetCard.style.display = "none";
+  }
 
   const grid = $("grid");
   grid.innerHTML = bingoCard.squares.map((sq, i) => {
     const isSelected = selectedSquare === i;
     const isDone = sq.status === "done";
     const isOverride = sq.override === true;
-    let cls = "square";
+    
+    let cls = "square-card";
     if (isSelected) cls += " selected";
     if (isDone) cls += " done";
     if (isOverride) cls += " override";
 
-    let badge = isDone ? (isOverride ? "done (manual)" : "done ✓") : "open";
-    let overrideBtn = (!isDone)
-      ? `<button class="sq-override-btn" onclick="overrideSquare(event, ${i})">Override</button>`
-      : "";
+    let badge = isDone ? (isOverride ? "Manual" : "✓ Done") : "Open";
+    if (isSelected && !isDone) badge = "Target";
 
     return `
       <div class="${cls}" onclick="selectSquare(${i})">
+        <div class="sq-num">#${i + 1}</div>
         <div class="sq-text">${esc(sq.text)}</div>
-        <div>
-          <div class="sq-badge">${badge}</div>
-          ${overrideBtn}
-        </div>
+        <div class="sq-status-pill">${badge}</div>
       </div>
     `;
   }).join("");
+
   updateSnapLabel();
 }
 
@@ -333,8 +848,12 @@ function selectSquare(i) {
   renderBingo();
 }
 
-async function overrideSquare(ev, i) {
-  ev.stopPropagation();
+async function overrideSelected() {
+  if (selectedSquare === null) return;
+  await overrideSquare(selectedSquare);
+}
+
+async function overrideSquare(i) {
   try {
     const r = await fetch("/api/bingo/override", {
       method: "POST",
@@ -344,15 +863,16 @@ async function overrideSquare(ev, i) {
     if (!r.ok) throw new Error();
     const data = await r.json();
     bingoCard = data.card;
+    showToast("✓ Square marked done manually", false);
     renderBingo();
   } catch(e) {
-    showStatus("Could not override square.");
+    showToast("Could not override square.", true);
   }
 }
 
 async function newCard() {
   const setting = $("settingSelect").value;
-  showStatus("Generating outdoor bingo card with local Gemma...");
+  showToast(`Generating ${setting} bingo card with local Gemma...`, false, true);
   try {
     const r = await fetch("/api/bingo/new", {
       method: "POST",
@@ -362,10 +882,10 @@ async function newCard() {
     if (!r.ok) throw new Error();
     bingoCard = await r.json();
     selectedSquare = null;
-    hideStatus();
+    showToast("✓ New 3x3 bingo card ready!", false);
     renderBingo();
   } catch(e) {
-    showStatus("Card generation failed. Ollama may be busy.");
+    showToast("Card generation failed. Ollama may be busy.", true);
   }
 }
 
@@ -373,42 +893,67 @@ function renderDex() {
   const rated = log.filter(e => e.correct !== null);
   const right = rated.filter(e => e.correct === true).length;
   const close = rated.filter(e => e.correct === "close").length;
-  if (log.length) {
-    let summary = `${log.length} logged`;
-    if (rated.length) {
-      summary += `, ${right} right, ${close} close (of ${rated.length} rated)`;
-    }
-    $("stats").textContent = summary;
+
+  $("statFound").textContent = log.length;
+  if (rated.length) {
+    const pct = Math.round(((right + (close * 0.5)) / rated.length) * 100);
+    $("statAccuracy").textContent = `${pct}%`;
   } else {
-    $("stats").textContent = "Nothing logged yet. Go outside.";
+    $("statAccuracy").textContent = "—";
   }
 
-  $("list").innerHTML = log.map((e, i) => `
-    <div class="entry ${esc(e.kind)}">
-      ${e.photo ? `<img class="thumb" src="/data/photos/${esc(e.photo)}" alt="${esc(e.name)}">` : ""}
-      <h3>${esc(e.name)}</h3>
-      <div class="meta">${esc(e.kind)}, ${esc(e.confidence)}% confidence, ${esc(e.seconds)} s</div>
-      <p>${esc(e.fun_fact)}</p>
-      ${e.match_reason ? `<p style="font-size:13px;opacity:.8;margin:2px 0;"><strong>Square:</strong> ${esc(e.match_reason)}</p>` : ""}
-      <div class="entry-actions">
-        <button class="${e.correct === true ? "on" : ""}" onclick="mark(${i}, true)">Right</button>
-        <button class="${e.correct === "close" ? "on" : ""}" onclick="mark(${i}, 'close')">Close</button>
-        <button class="${e.correct === false ? "on" : ""}" onclick="mark(${i}, false)">Wrong</button>
+  const list = $("dexList");
+  if (!log.length) {
+    list.innerHTML = `<div style="text-align:center;padding:40px 20px;color:var(--text-muted);font-size:14px;">No nature sightings logged yet.<br>Snap a photo outside to begin!</div>`;
+    return;
+  }
+
+  list.innerHTML = log.map((e, i) => {
+    const kindClass = `kind-${e.kind || "other"}`;
+    const thumbHtml = e.photo 
+      ? `<img class="dex-thumb" src="/data/photos/${esc(e.photo)}" alt="${esc(e.name)}">`
+      : `<div class="dex-thumb-placeholder">🌿</div>`;
+
+    return `
+      <div class="dex-card">
+        ${thumbHtml}
+        <div class="dex-info">
+          <div class="dex-header">
+            <h3 class="dex-name">${esc(e.name)}</h3>
+            <span class="kind-pill ${kindClass}">${esc(e.kind || "other")}</span>
+          </div>
+          <div class="dex-meta">
+            <span>${esc(e.confidence)}% sure</span>
+            <span>•</span>
+            <span>${esc(e.seconds)}s</span>
+          </div>
+          <p class="dex-fact">${esc(e.fun_fact)}</p>
+          ${e.match_reason ? `<div class="dex-square-note">🎯 Square: ${esc(e.match_reason)}</div>` : ""}
+          <div class="dex-actions">
+            <button class="rate-btn ${e.correct === true ? 'active-right' : ''}" onclick="mark(${i}, true)">✓ Right</button>
+            <button class="rate-btn ${e.correct === 'close' ? 'active-close' : ''}" onclick="mark(${i}, 'close')">~ Close</button>
+            <button class="rate-btn ${e.correct === false ? 'active-wrong' : ''}" onclick="mark(${i}, false)">✗ Wrong</button>
+          </div>
+        </div>
       </div>
-    </div>
-  `).slice().reverse().join("");
+    `;
+  }).slice().reverse().join("");
 }
 
-function showStatus(text) {
-  const el = $("status");
-  el.textContent = text;
-  el.className = "show";
-}
-
-function hideStatus() {
-  const el = $("status");
-  el.textContent = "";
-  el.className = "";
+function showToast(text, isError = false, isPulse = false) {
+  const el = $("statusToast");
+  const msg = $("statusMsg");
+  const icon = $("statusIcon");
+  msg.textContent = text;
+  icon.textContent = isError ? "⚠️" : (isPulse ? "⏳" : "✓");
+  el.className = isError ? "error" : (isPulse ? "pulse" : "");
+  el.style.display = "flex";
+  if (window._toastTimer) clearTimeout(window._toastTimer);
+  if (!isPulse) {
+    window._toastTimer = setTimeout(() => {
+      el.style.display = "none";
+    }, isError ? 5000 : 3500);
+  }
 }
 
 async function load() {
@@ -422,7 +967,7 @@ async function load() {
     renderBingo();
     renderDex();
   } catch (e) {
-    showStatus("Could not connect to Grassdex server.");
+    showToast("Could not connect to Grassdex local server.", true);
   }
 }
 
@@ -436,13 +981,16 @@ async function mark(i, correct) {
   renderDex();
 }
 
-$("photo").onchange = async ev => {
+$("photoInput").onchange = async ev => {
   const file = ev.target.files[0];
   if (!file) return;
 
   const targetIdx = (currentTab === "bingo") ? selectedSquare : null;
-  const squareLabel = (targetIdx !== null && bingoCard && bingoCard.squares[targetIdx]) ? ` for "${bingoCard.squares[targetIdx].text}"` : "";
-  showStatus(`Identifying${squareLabel} with local Gemma...`);
+  const squareLabel = (targetIdx !== null && bingoCard && bingoCard.squares[targetIdx]) 
+    ? ` for "${bingoCard.squares[targetIdx].text}"` 
+    : "";
+  
+  showToast(`Identifying with local Gemma 4${squareLabel}...`, false, true);
 
   const fd = new FormData();
   fd.append("photo", file);
@@ -457,17 +1005,17 @@ $("photo").onchange = async ev => {
 
     if (targetIdx !== null) {
       if (result.square_match) {
-        showStatus(`✓ Satisfied: "${bingoCard.squares[targetIdx].text}" (${result.name})`);
+        showToast(`✓ Match verified! ${result.name}`, false);
       } else {
-        showStatus(`✗ Did not match square (${result.name}): ${result.match_reason || "Check override if correct"}`);
+        showToast(`Did not match: ${result.match_reason || "Check override"}`, true);
       }
     } else {
-      showStatus(`Identified: ${result.name} (${result.confidence}%)`);
+      showToast(`Identified: ${result.name} (${result.confidence}%)`, false);
     }
 
     await load();
   } catch(e) {
-    showStatus("Couldn't reach Ollama. Start it, then snap again.");
+    showToast("Couldn't reach Ollama. Start it, then snap again.", true);
   }
   ev.target.value = "";
 };
