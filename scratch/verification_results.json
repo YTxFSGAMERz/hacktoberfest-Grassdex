@@ -1,0 +1,62 @@
+[
+  {
+    "desc": "Sunflower vs 'a yellow flower' (MATCH)",
+    "expected": true,
+    "actual": true,
+    "confidence": 100,
+    "reason": "The subject is a vibrant yellow sunflower.",
+    "seconds": 10.6,
+    "photo": "20261006-202801-321.jpg",
+    "pass": true
+  },
+  {
+    "desc": "Sunflower vs 'a small insect' (NON-MATCH)",
+    "expected": false,
+    "actual": false,
+    "confidence": 100,
+    "reason": "The photo features a large sunflower plant, not a small insect or beetle.",
+    "seconds": 10.5,
+    "photo": "20261006-202812-101.jpg",
+    "pass": true
+  },
+  {
+    "desc": "Beetle vs 'a small insect or beetle' (MATCH)",
+    "expected": true,
+    "actual": true,
+    "confidence": 95,
+    "reason": "The photo clearly shows a small beetle.",
+    "seconds": 16.1,
+    "photo": "20261006-202822-146.jpg",
+    "pass": true
+  },
+  {
+    "desc": "Beetle vs 'a bird' (NON-MATCH)",
+    "expected": false,
+    "actual": false,
+    "confidence": 95,
+    "reason": "The photo shows an insect (a bug), not a bird.",
+    "seconds": 16.0,
+    "photo": "20261006-202838-239.jpg",
+    "pass": true
+  },
+  {
+    "desc": "Sparrow vs 'a bird' (MATCH)",
+    "expected": true,
+    "actual": true,
+    "confidence": 95,
+    "reason": "The bird is clearly standing on a log resting on the ground.",
+    "seconds": 17.2,
+    "photo": "20261006-202855-389.jpg",
+    "pass": true
+  },
+  {
+    "desc": "Sparrow vs 'a yellow flower' (NON-MATCH)",
+    "expected": false,
+    "actual": false,
+    "confidence": 95,
+    "reason": "The photo shows a bird on dirt, not a yellow flower.",
+    "seconds": 16.6,
+    "photo": "20261006-202912-952.jpg",
+    "pass": true
+  }
+]

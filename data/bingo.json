@@ -1,0 +1,60 @@
+{
+  "id": "2026-10-06T21:35:39",
+  "setting": "park",
+  "squares": [
+    {
+      "text": "A distant pigeon perched on a park bench.",
+      "status": "open",
+      "override": false,
+      "photo": null
+    },
+    {
+      "text": "Bright red flower petals visible clearly.",
+      "status": "done",
+      "override": false,
+      "photo": "20261006-215801-861.jpg"
+    },
+    {
+      "text": "Green foliage under dappled sunlight.",
+      "status": "open",
+      "override": false,
+      "photo": null
+    },
+    {
+      "text": "Small butterfly resting gently on grass.",
+      "status": "open",
+      "override": false,
+      "photo": null
+    },
+    {
+      "text": "Circular wooden signpost near walkway.",
+      "status": "done",
+      "override": true,
+      "photo": null
+    },
+    {
+      "text": "Yellow picnic blanket folded neatly up.",
+      "status": "open",
+      "override": false,
+      "photo": null
+    },
+    {
+      "text": "Park metal fence or railing structure.",
+      "status": "open",
+      "override": false,
+      "photo": null
+    },
+    {
+      "text": "Smooth grey concrete path edging.",
+      "status": "done",
+      "override": true,
+      "photo": null
+    },
+    {
+      "text": "Woven pattern of a hanging hammock.",
+      "status": "open",
+      "override": false,
+      "photo": null
+    }
+  ]
+}
