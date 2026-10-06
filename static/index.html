@@ -372,8 +372,13 @@ async function newCard() {
 function renderDex() {
   const rated = log.filter(e => e.correct !== null);
   const right = rated.filter(e => e.correct === true).length;
+  const close = rated.filter(e => e.correct === "close").length;
   if (log.length) {
-    $("stats").textContent = log.length + " logged" + (rated.length ? `, ${right} of ${rated.length} IDs right` : "");
+    let summary = `${log.length} logged`;
+    if (rated.length) {
+      summary += `, ${right} right, ${close} close (of ${rated.length} rated)`;
+    }
+    $("stats").textContent = summary;
   } else {
     $("stats").textContent = "Nothing logged yet. Go outside.";
   }
@@ -387,6 +392,7 @@ function renderDex() {
       ${e.match_reason ? `<p style="font-size:13px;opacity:.8;margin:2px 0;"><strong>Square:</strong> ${esc(e.match_reason)}</p>` : ""}
       <div class="entry-actions">
         <button class="${e.correct === true ? "on" : ""}" onclick="mark(${i}, true)">Right</button>
+        <button class="${e.correct === "close" ? "on" : ""}" onclick="mark(${i}, 'close')">Close</button>
         <button class="${e.correct === false ? "on" : ""}" onclick="mark(${i}, false)">Wrong</button>
       </div>
     </div>
