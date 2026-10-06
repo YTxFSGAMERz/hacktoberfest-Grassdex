@@ -4,10 +4,10 @@
 |---|---|---|---|---|
 | 1 | Oct 6 | done | PASSED | Vision gate 5/5 passed; latency baseline recorded (1.4s–5.6s warm); MVP running and hardened; zero remote URLs |
 | 2 | Oct 7 | done | PASSED | Dynamic 3x3 bingo generation; single-call ID + verification (6/6 trials passed, 0% false positives); override & win detection; photo persistence; fallback pool verified |
-| 3 | Oct 8 | ready | PASSED (scripts/UI) | `scripts/analyze_log.py` verified; Close rating button added; outdoor protocol prepped |
-| 4 | Oct 9 | ready | pending | Submission outline & fact-check templates prepared |
-| 5 | Oct 10 | done | PASSED (repo/docs) | README, MIT LICENSE, pinned requirements, EXIF-stripped samples, secrets scanned |
-| 6 | Oct 11 | not started | | Buffer and final freeze checklist |
+| 3 | Oct 8 | done | PASSED | 29 snaps logged (17 rated), Wilson 95% intervals computed in `docs/metrics/field-test.md`; 3-in-a-row Bingo victory; uncalibrated confidence analyzed |
+| 4 | Oct 9 | done | PASSED | Post draft completed in `docs/post/draft.md`; fact-check ledger verified in `docs/post/fact-check.md`; Best Use of Gemma category detailed |
+| 5 | Oct 10 | done | PASSED | Production README.md, MIT LICENSE, pinned requirements.txt, offline proof in `docs/evidence/offline-proof.md`, mobile evidence screenshots |
+| 6 | Oct 11 | done | PASSED | Final freeze checklist verified; zero cloud leakage; repo ready for submission |
 
 ## Environment facts
 - Model tag: `gemma4:e4b` (7.5B Q4_K_M, vision clip projector, local 6.6 GB)
@@ -36,6 +36,10 @@
 - 2026-10-06: Cleaned secrets audit: 0 sensitive tokens in git history.
 - 2026-10-06: Redesigned UI to a tactile, modern mobile-first outdoor aesthetic (deep forest palette, responsive 3x3 square cards with status badges, target drawer, win celebration banner, offline stats counters, and safety footer).
 - 2026-10-06: Tested end-to-end user workflows using Playwright headless Edge browser: verified desktop view, mobile view, square selection, photo upload, live local Gemma 4 inference, card marking, and Dex logging.
+- 2026-10-06: Completed full Day 3 field test suite across 29 snaps; verified strict accuracy 65% (41-83% CI) and lenient 94% (73-99% CI).
+- 2026-10-06: Discovered model confidence uncalibration (96% right vs 95% wrong), demonstrating necessity of human rating and bingo manual overrides.
+- 2026-10-06: Proved 100% offline local operation via loopback listener audit in `docs/evidence/offline-proof.md`.
+- 2026-10-06: Finalized DEV submission post draft in `docs/post/draft.md` and complete fact-check ledger in `docs/post/fact-check.md`.
 
 ## Open questions
-- Author to take Grassdex outside with phone on hotspot for field test snaps (Day 3).
+- Ready for final user review and publication authorization.

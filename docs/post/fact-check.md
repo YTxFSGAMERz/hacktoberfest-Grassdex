@@ -20,3 +20,10 @@
 | Privacy | Photos stored locally in `data/photos/` | `app.py`, `.gitignore` | Verified | Photos never leave laptop; EXIF stripped in `samples/` |
 | Entry period window | Started Oct 6, 2026 | `git log` | Verified | Repo created within Week 1 window |
 | Late commits | None | `README.md`, `git log` | Verified | All commits inside window |
+| Field test total snaps | 29 logged (17 rated) | `docs/metrics/field-test.md` | Verified | Tested across plants, bugs, birds, fungi, controls |
+| Strict accuracy | 65% (11/17, 95% CI: 41-83%) | `docs/metrics/field-test.md` | Verified | Wilson score interval computed by `analyze_log.py` |
+| Lenient accuracy | 94% (16/17, 95% CI: 73-99%) | `docs/metrics/field-test.md` | Verified | Right or close genus / family |
+| JSON parse failures | 0 of 29 (0%) | `docs/metrics/field-test.md` | Verified | Strict JSON mode in `app.py` |
+| Field test latency | Median 16.1s, p90 18.4s | `docs/metrics/field-test.md` | Verified | Range 9.7s – 36.3s on RTX 3050 |
+| Model confidence calibration | 96% right, 93% close, 95% wrong | `docs/metrics/field-test.md` | Verified | Proves confidence is uncalibrated |
+| Bingo win condition | Column [1, 4, 7] completed | `docs/metrics/field-test.md` | Verified | 3-in-a-row with 1 model match + 2 overrides |

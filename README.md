@@ -111,7 +111,9 @@ Grassdex runs completely disconnected from the internet:
 All project experiments and measurements are documented in [`docs/metrics/`](docs/metrics/):
 - [`docs/metrics/day1-smoke.md`](docs/metrics/day1-smoke.md): 5-image vision gate & latency baseline.
 - [`docs/metrics/day2-bingo.md`](docs/metrics/day2-bingo.md): Single-call verification accuracy (6 trials, 100% match accuracy, 0% false positives) and 5-card safety generation.
-- To analyze field-test logs:
+- [`docs/metrics/field-test.md`](docs/metrics/field-test.md): Full field test summary across 29 snaps (65% strict accuracy, 94% lenient accuracy, 0% parse failures, 16.1s median latency, and uncalibrated confidence analysis).
+- [`docs/evidence/offline-proof.md`](docs/evidence/offline-proof.md): Offline TCP listener and code audit proof.
+- To re-analyze logs at any time:
   ```powershell
   python scripts/analyze_log.py data/grassdex.json --bingo data/bingo.json --out docs/metrics/field-test.md
   ```
