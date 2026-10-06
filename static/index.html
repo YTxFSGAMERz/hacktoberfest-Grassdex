@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grassdex</title>
+<style>
+  :root { --paper:#e8eee0; --ink:#1d2a20; --bilberry:#3d2f73; --rule:#b9c7b0; }
+  body { margin:0 auto; padding:20px 18px 48px; max-width:34rem; background:var(--paper); color:var(--ink); font:17px/1.55 Georgia, serif; }
+  h1 { margin:0; font-size:2rem; }
+  #stats { margin:2px 0 18px; font:15px system-ui, sans-serif; opacity:.75; }
+  .snap { display:block; position:relative; text-align:center; padding:16px; border-radius:4px; background:var(--bilberry); color:#fff; font:600 17px system-ui, sans-serif; cursor:pointer; }
+  .snap:focus-within { outline:3px solid var(--ink); outline-offset:2px; }
+  .snap input { position:absolute; opacity:0; width:1px; height:1px; }
+  #status { margin:12px 0; font:15px system-ui, sans-serif; }
+  .entry { padding:14px 0 14px 12px; border-bottom:1px solid var(--rule); border-left:4px solid var(--rule); }
+  .entry.plant { border-left-color:#5b8c4a; } .entry.bug { border-left-color:#b8862b; }
+  .entry.bird { border-left-color:#3d6f9e; } .entry.fungus { border-left-color:#8a5a7a; }
+  .entry h3 { margin:0; font-size:1.2rem; }
+  .meta { font:14px system-ui, sans-serif; opacity:.7; }
+  .entry p { margin:6px 0 10px; }
+  .entry button { margin-right:6px; padding:4px 10px; font:14px system-ui, sans-serif; background:none; color:var(--ink); border:1px solid var(--ink); border-radius:4px; cursor:pointer; }
+  .entry button.on { background:var(--ink); color:var(--paper); }
+  button:focus-visible { outline:3px solid var(--bilberry); outline-offset:2px; }
+</style>
+</head>
+<body>
+<h1>Grassdex</h1>
+<p id="stats">Nothing found yet. Go outside.</p>
+<label class="snap">Snap a photo<input id="photo" type="file" accept="image/*" capture="environment"></label>
+<div id="status" role="status"></div>
+<div id="list"></div>
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let log = [];
+
+function render() {
+  const rated = log.filter(e => e.correct !== null);
+  const right = rated.filter(e => e.correct).length;
+  if (log.length) $("stats").textContent = log.length + " found" + (rated.length ? ", " + right + " of " + rated.length + " IDs right" : "");
+  $("list").innerHTML = log.map((e, i) => `
+    <div class="entry ${esc(e.kind)}">
+      <h3>${esc(e.name)}</h3>
+      <div class="meta">${esc(e.kind)}, ${esc(e.confidence)}% sure, ${esc(e.seconds)} s</div>
+      <p>${esc(e.fun_fact)}</p>
+      <button class="${e.correct === true ? "on" : ""}" onclick="mark(${i}, true)">Right</button>
+      <button class="${e.correct === false ? "on" : ""}" onclick="mark(${i}, false)">Wrong</button>
+    </div>`).reverse().join("");
+}
+
+async function load() {
+  log = await (await fetch("/api/log")).json();
+  render();
+}
+
+async function mark(i, correct) {
+  await fetch("/api/mark", { method:"POST", headers:{ "Content-Type":"application/json" }, body:JSON.stringify({ i, correct }) });
+  load();
+}
+
+$("photo").onchange = async ev => {
+  const file = ev.target.files[0];
+  if (!file) return;
+  $("status").textContent = "Asking the local model...";
+  const fd = new FormData();
+  fd.append("photo", file);
+  try {
+    const r = await fetch("/api/identify", { method:"POST", body:fd });
+    if (!r.ok) throw new Error(r.status);
+    $("status").textContent = "";
+    await load();
+  } catch (e) {
+    $("status").textContent = "Couldn't reach Ollama. Start it, then snap again.";
+  }
+  ev.target.value = "";
+};
+
+load();
+</script>
+</body>
+</html>
